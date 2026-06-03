@@ -1,0 +1,21 @@
+/* next/font variable bindings: keeps globals.css verbatim */
+html,
+body {
+  font-family: var(--font-space-grotesk), "Helvetica Neue", system-ui, sans-serif;
+}
+
+.display {
+  font-family: var(--font-anton), "Bebas Neue", Impact, sans-serif;
+}
+
+.mono,
+.mono-sm {
+  font-family: var(--font-jetbrains-mono), ui-monospace, Menlo, monospace;
+}
+
+.pullquote,
+.persp-quote,
+.journey-content blockquote,
+.focus-content blockquote {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+}

@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .admin-root {
+    --admin-bg: #080b0e;
+    --admin-bg-elevated: #0c1014;
+    --admin-surface: #11161c;
+    --admin-surface-raised: #161c24;
+    --admin-surface-hover: #1c232c;
+    --admin-accent: #28bdae;
+    --admin-accent-dim: #1f9a8e;
+    --admin-accent-faint: rgba(40, 189, 174, 0.12);
+    --admin-ink: #f4f5f6;
+    --admin-ink-dim: #a8b0ba;
+    --admin-ink-faint: #6b7280;
+    --admin-line: rgba(255, 255, 255, 0.06);
+    --admin-line-strong: rgba(255, 255, 255, 0.1);
+    --admin-radius: 10px;
+    --admin-radius-lg: 14px;
+    --admin-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    --admin-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+    font-family: var(--font-space-grotesk), system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .admin-fade-in {
+    animation: adminFadeIn 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes adminFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .admin-main-bg {
+    background:
+      radial-gradient(ellipse 80% 50% at 100% -20%, rgba(40, 189, 174, 0.06), transparent 50%),
+      radial-gradient(ellipse 60% 40% at 0% 100%, rgba(40, 189, 174, 0.03), transparent 45%),
+      var(--admin-bg-elevated);
+  }
+
+  .admin-input {
+    @apply w-full rounded-lg border bg-[var(--admin-surface)] px-3.5 py-2.5 text-sm text-[var(--admin-ink)] transition-colors duration-150;
+    border-color: var(--admin-line-strong);
+  }
+
+  .admin-input:focus {
+    @apply outline-none;
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 3px var(--admin-accent-faint);
+  }
+
+  .admin-input::placeholder {
+    color: var(--admin-ink-faint);
+  }
+
+  .admin-label {
+    @apply mb-1.5 block text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--admin-ink-faint)];
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-150;
+    background: var(--admin-accent);
+    color: var(--admin-bg);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .btn-primary:hover {
+    background: var(--admin-accent-dim);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 189, 174, 0.25);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-all duration-150;
+    border-color: var(--admin-line-strong);
+    color: var(--admin-ink);
+    background: transparent;
+  }
+
+  .btn-ghost:hover {
+    background: var(--admin-surface-hover);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .admin-card {
+    @apply rounded-[var(--admin-radius-lg)] border bg-[var(--admin-surface)];
+    border-color: var(--admin-line);
+    box-shadow: var(--admin-shadow-sm);
+  }
+
+  .admin-card-interactive {
+    @apply admin-card transition-all duration-200;
+  }
+
+  .admin-card-interactive:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: var(--admin-surface-raised);
+    box-shadow: var(--admin-shadow-sm);
+  }
+
+  .admin-card-header {
+    @apply flex items-center justify-between border-b px-5 py-4;
+    border-color: var(--admin-line);
+  }
+
+  .admin-card-body {
+    @apply p-5;
+  }
+
+  .admin-section-label {
+    @apply text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--admin-ink-faint)];
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
+
+  .admin-mono {
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
+
+  .admin-badge {
+    @apply inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide;
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
+
+  .admin-badge-success {
+    background: var(--admin-accent-faint);
+    color: var(--admin-accent);
+  }
+
+  .admin-badge-warning {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+  }
+
+  .admin-badge-muted {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--admin-ink-faint);
+  }
+
+  .admin-nav-item {
+    @apply relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150;
+    color: var(--admin-ink-dim);
+  }
+
+  .admin-nav-item:hover {
+    color: var(--admin-ink);
+    background: var(--admin-surface-hover);
+  }
+
+  .admin-nav-item-active {
+    color: var(--admin-accent) !important;
+    background: var(--admin-accent-faint) !important;
+  }
+
+  .admin-nav-item-active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 18px;
+    border-radius: 0 2px 2px 0;
+    background: var(--admin-accent);
+  }
+
+  .admin-stat-card {
+    @apply admin-card relative overflow-hidden p-5;
+  }
+
+  .admin-stat-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(40, 189, 174, 0.04) 0%,
+      transparent 55%
+    );
+    pointer-events: none;
+  }
+
+  .admin-divider {
+    @apply border-t;
+    border-color: var(--admin-line);
+  }
+
+  .blog-prose {
+    @apply leading-relaxed text-[var(--admin-ink-dim)];
+  }
+
+  .blog-prose h2 {
+    @apply mb-3 mt-8 text-xl font-semibold text-[var(--admin-ink)];
+  }
+
+  .blog-prose h3 {
+    @apply mb-2 mt-6 text-lg font-semibold text-[var(--admin-ink)];
+  }
+
+  .blog-prose p {
+    @apply mb-4;
+  }
+
+  .blog-prose a {
+    @apply text-[var(--admin-accent)] underline;
+  }
+
+  .blog-prose code {
+    @apply rounded bg-[var(--admin-surface-hover)] px-1.5 py-0.5 font-mono text-sm text-[#7af7e5];
+  }
+
+  .blog-prose pre {
+    @apply my-4 overflow-x-auto rounded-lg border p-4;
+    border-color: var(--admin-line-strong);
+    background: var(--admin-bg);
+  }
+
+  .blog-prose blockquote {
+    @apply border-l-2 pl-4 italic;
+    border-color: var(--admin-accent);
+    color: var(--admin-ink-dim);
+  }
+
+  .blog-prose ul {
+    @apply mb-4 list-disc pl-6;
+  }
+}
