@@ -14,6 +14,7 @@ import {
   Image,
 } from "lucide-react";
 import { PostMeta, type PostMetaValues } from "./PostMeta";
+import { CoverImagePanel } from "@/components/admin/ContentEngine/CoverImagePanel";
 import { createPost, updatePost, publishPost } from "@/lib/content/blog";
 import { validateSlug } from "@/lib/content/blog-utils";
 import { slugify } from "@/lib/content/slug";
@@ -183,6 +184,15 @@ export function PostEditor({ post }: Props) {
             placeholder="Excerpt"
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
+          />
+
+          <CoverImagePanel
+            postId={post?.id}
+            coverImage={meta.coverImage || null}
+            onCoverChange={(url) =>
+              setMeta((m) => ({ ...m, coverImage: url ?? "" }))
+            }
+            persist={Boolean(post?.id)}
           />
 
           <div className="admin-card overflow-hidden">

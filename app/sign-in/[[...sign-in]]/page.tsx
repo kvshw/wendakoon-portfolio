@@ -1,4 +1,5 @@
 import { SignIn } from "@clerk/nextjs";
+import { AuthShell } from "@/components/AuthShell";
 
 const DEFAULT_ADMIN_URL = "/admin/content-engine";
 
@@ -18,7 +19,7 @@ export default async function SignInPage({ searchParams }: Props) {
   const afterSignInUrl = resolveRedirectUrl(params.redirect_url);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0A0D10]">
+    <AuthShell>
       <SignIn
         routing="path"
         path="/sign-in"
@@ -26,6 +27,6 @@ export default async function SignInPage({ searchParams }: Props) {
         fallbackRedirectUrl={afterSignInUrl}
         forceRedirectUrl={afterSignInUrl}
       />
-    </div>
+    </AuthShell>
   );
 }

@@ -26,7 +26,7 @@ npm run db:push
 
 `vercel.json` schedules generation Mon/Thu 09:00 UTC. Vercel automatically sends `Authorization: Bearer <CRON_SECRET>` when `CRON_SECRET` is set in project env.
 
-Manual trigger:
+Manual trigger from the admin UI (**Generate now** on `/admin/content-engine`) or via curl:
 
 ```bash
 curl -X POST https://your-domain.com/api/cron/generate \
@@ -36,3 +36,10 @@ curl -X POST https://your-domain.com/api/cron/generate \
 ## 5. Admin dashboard
 
 Visit `/admin/content-engine` after signing in with an allowlisted email.
+
+The content engine:
+- Synthesizes recent AI news (Google News RSS) with your research profile when generating drafts
+- Mixes work-related topics (~65%) with broader AI industry themes (~35%)
+- Provides SEO scoring, search preview, slug/tags editing, and markdown editor with live preview
+- Lets you copy, save, and track LinkedIn post variations (draft → ready → posted)
+- Auto-generates a high-resolution cover per post (1200×630 PNG; DALL-E 3 HD if `OPENAI_API_KEY` is set)

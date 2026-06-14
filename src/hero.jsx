@@ -1,4 +1,4 @@
-/* HERO, editorial cover composition */
+/* HERO — editorial cover composition */
 
 const Hero = () => {
   return (
@@ -18,7 +18,7 @@ const Hero = () => {
             <Reveal delay={120}>
               <div className="mono"><span className="bracket">Statement 01</span></div>
               <p className="lead" style={{marginTop: 14}}>
-              Doctoral Researcher in <span className="accent">Self-Adaptive AI · Clinical Decision Support · Runtime Governance</span>
+                PhD Researcher in <span className="accent">Self-Adaptive AI · Clinical Decision Support · Runtime Governance</span>
               </p>
             </Reveal>
             <Reveal delay={220}>
@@ -46,7 +46,7 @@ const Hero = () => {
               </div>
               <figcaption className="portrait-caption">
                 <span><span className="bracket">Portrait</span></span>
-                <span>Oulu · 2026</span>
+                <span>Oulu — 2026</span>
               </figcaption>
             </figure>
           </Reveal>

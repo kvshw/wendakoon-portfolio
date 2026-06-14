@@ -4,12 +4,14 @@ import { requireDb } from "@/lib/db/drizzle";
 import { generateContentDraft } from "./anthropic";
 import { slugify, withSlugSuffix } from "./slug";
 import { sendContentDraftCreatedEmail } from "@/lib/notify/email";
+import { generateAndSaveCover } from "./cover-image";
 
 export type GenerationResult = {
   postId: string;
   title: string;
   slug: string;
   linkedinCount: number;
+  coverImage?: string | null;
 };
 
 async function resolveUniqueSlug(baseSlug: string): Promise<string> {
@@ -38,16 +40,33 @@ export async function runContentGeneration(): Promise<GenerationResult> {
   const slug = await resolveUniqueSlug(baseSlug);
 
   const now = new Date();
+  const excerpt = generated.blog.excerpt ?? generated.blog.summary;
+
+  let coverImage: string | null = null;
+  try {
+    const cover = await generateAndSaveCover({
+      title: generated.blog.title,
+      slug,
+      tags: generated.blog.tags,
+      topicAngle: generated.blog.topic_angle,
+      imagePrompt: generated.blog.cover_image_prompt,
+    });
+    coverImage = cover.url;
+  } catch (err) {
+    console.error("[generate] Cover image failed:", err);
+  }
+
   const [post] = await db
     .insert(posts)
     .values({
       title: generated.blog.title,
       slug,
       summary: generated.blog.summary,
-      excerpt: generated.blog.summary,
+      excerpt,
       content: generated.blog.markdown,
+      coverImage,
       status: "draft",
-      tags: [],
+      tags: generated.blog.tags,
       updatedAt: now,
     })
     .returning({ id: posts.id, title: posts.title, slug: posts.slug });
@@ -84,5 +103,6 @@ export async function runContentGeneration(): Promise<GenerationResult> {
     title: post.title,
     slug: post.slug,
     linkedinCount: linkedinRows.length,
+    coverImage,
   };
 }

@@ -11,7 +11,11 @@ const CardBody = ({ post }) => {
         <img
           src={post.coverImage}
           alt=""
-          className="mb-4 h-36 w-full rounded object-cover"
+          className="mb-4 h-44 w-full rounded object-cover"
+          width={1200}
+          height={630}
+          loading="lazy"
+          decoding="async"
         />
       )}
       <div className="date">[ {post.date} ]</div>

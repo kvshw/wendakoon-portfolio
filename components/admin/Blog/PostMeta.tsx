@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { slugify } from "@/lib/content/slug";
 import { tokens } from "@/lib/admin/tokens";
 
@@ -26,7 +26,6 @@ export function PostMeta({
   slugManual,
   onSlugManualChange,
 }: Props) {
-  const fileRef = useRef<HTMLInputElement>(null);
   const [tagInput, setTagInput] = useState("");
   const [showPublishConfirm, setShowPublishConfirm] = useState(false);
 
@@ -41,15 +40,6 @@ export function PostMeta({
     if (!t || values.tags.includes(t)) return;
     onChange({ ...values, tags: [...values.tags, t] });
     setTagInput("");
-  };
-
-  const uploadCover = async (file: File) => {
-    const fd = new FormData();
-    fd.append("file", file);
-    const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-    if (!res.ok) return;
-    const { url } = await res.json();
-    onChange({ ...values, coverImage: url });
   };
 
   const setStatus = (status: PostMetaValues["status"]) => {
@@ -137,33 +127,6 @@ export function PostMeta({
           </div>
         </div>
       )}
-
-      <div>
-        <label className="admin-label">Cover image</label>
-        <input
-          className="admin-input mb-2 text-xs"
-          placeholder="URL or upload"
-          value={values.coverImage}
-          onChange={(e) => onChange({ ...values, coverImage: e.target.value })}
-        />
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) uploadCover(f);
-          }}
-        />
-        <button
-          type="button"
-          className="btn-ghost w-full text-xs"
-          onClick={() => fileRef.current?.click()}
-        >
-          Upload to /public/blog
-        </button>
-      </div>
 
       <div>
         <label className="admin-label">Tags</label>

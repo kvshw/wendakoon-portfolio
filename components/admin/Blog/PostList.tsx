@@ -68,8 +68,29 @@ export function PostList({ posts }: { posts: Post[] }) {
               key={post.id}
               className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
             >
-              <div>
-                <div className="flex items-center gap-2">
+              <div className="flex items-start gap-3 min-w-0">
+                {post.coverImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={post.coverImage}
+                    alt=""
+                    className="h-12 w-20 shrink-0 rounded object-cover"
+                    style={{ border: `1px solid ${tokens.line}` }}
+                  />
+                ) : (
+                  <div
+                    className="h-12 w-20 shrink-0 rounded flex items-center justify-center text-[8px] font-mono uppercase text-center px-1"
+                    style={{
+                      border: `1px dashed ${tokens.line}`,
+                      color: tokens.amber,
+                      background: tokens.amberFaint,
+                    }}
+                  >
+                    No cover
+                  </div>
+                )}
+                <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span
                     className="admin-mono rounded px-1.5 py-0.5 text-[9px]"
                     style={{
@@ -96,8 +117,15 @@ export function PostList({ posts }: { posts: Post[] }) {
                 <p className="mt-1 font-mono text-xs" style={{ color: tokens.inkFaint }}>
                   /blog/{post.slug}
                 </p>
+                </div>
               </div>
               <div className="flex gap-2">
+                <Link
+                  href={`/admin/content-engine?status=all&post=${post.id}`}
+                  className="btn-ghost text-xs"
+                >
+                  {post.coverImage ? "Cover" : "Add cover"}
+                </Link>
                 <Link href={`/admin/blog/${post.id}/edit`} className="btn-ghost text-xs">
                   Edit
                 </Link>

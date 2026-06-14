@@ -3492,3 +3492,42 @@ footer .container {
     margin-top: 48px;
   }
 }
+
+/* ===========================================================
+   AUTH: Clerk sign-in / sign-up shell
+   =========================================================== */
+.auth-page {
+  position: relative;
+  display: flex;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  padding:
+    calc(24px + var(--safe-top))
+    24px
+    calc(24px + var(--safe-bottom));
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.auth-page__card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-page .cl-rootBox,
+.auth-page .cl-cardBox {
+  width: 100%;
+}
+
+.auth-page .cl-card {
+  backdrop-filter: blur(12px);
+}
+
+.auth-page .cl-footerPages,
+.auth-page .cl-footer {
+  background: transparent !important;
+}
+

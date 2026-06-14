@@ -61,6 +61,9 @@ export default async function BlogPostPage({ params }: Props) {
                 src={post.coverImage}
                 alt=""
                 className="blog-article-cover"
+                width={1200}
+                height={630}
+                decoding="async"
               />
             </figure>
           )}
