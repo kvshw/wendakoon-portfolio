@@ -1,5 +1,4 @@
 import { validateSlug } from "@/lib/content/blog-utils";
-import { estimateReadingTime } from "@/lib/content/blog-format";
 
 export type SeoAnalysis = {
   titleLength: number;
@@ -51,7 +50,7 @@ export function analyzeSeo(input: {
   const slugValid = validateSlug(input.slug.trim());
   const slugLength = input.slug.trim().length;
   const wordCount = countWords(input.content);
-  const readingTime = estimateReadingTime(input.content);
+  const readingTime = Math.max(1, Math.ceil(wordCount / 220));
   const headingCount = countHeadings(input.content);
   const charCount = input.content.length;
 
