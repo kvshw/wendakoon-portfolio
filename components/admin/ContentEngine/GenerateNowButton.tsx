@@ -1,21 +1,42 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Sparkles } from "lucide-react";
 import { generateContentNow } from "@/lib/content/actions";
 import { tokens } from "@/lib/admin/tokens";
 
+const GENERATION_STEPS = [
+  "Fetching AI news and trending topics…",
+  "Drafting blog post and LinkedIn variants…",
+  "Generating cover image…",
+  "Saving draft to your queue…",
+] as const;
+
 export function GenerateNowButton() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const [stepIndex, setStepIndex] = useState(0);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!pending) return;
+
+    setStepIndex(0);
+    const interval = window.setInterval(() => {
+      setStepIndex((current) =>
+        current < GENERATION_STEPS.length - 1 ? current + 1 : current
+      );
+    }, 12000);
+
+    return () => window.clearInterval(interval);
+  }, [pending]);
 
   const handleGenerate = () => {
     setMessage(null);
     setError(null);
-    setMessage("Fetching AI news and drafting content. This may take a minute…");
+    setStepIndex(0);
 
     startTransition(async () => {
       try {
@@ -34,8 +55,16 @@ export function GenerateNowButton() {
     });
   };
 
+  const progress =
+    pending && !error
+      ? Math.min(
+          95,
+          Math.round(((stepIndex + 1) / GENERATION_STEPS.length) * 100)
+        )
+      : 0;
+
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-col items-end gap-2 w-full max-w-xs">
       <button
         type="button"
         onClick={handleGenerate}
@@ -45,7 +74,29 @@ export function GenerateNowButton() {
         <Sparkles size={16} className={pending ? "animate-pulse" : undefined} />
         {pending ? "Generating…" : "Generate now"}
       </button>
-      {message && !error && (
+      {pending && !error && (
+        <div className="w-full space-y-2">
+          <div
+            className="h-1.5 w-full overflow-hidden rounded-full"
+            style={{ background: tokens.surfaceHover }}
+          >
+            <div
+              className="h-full rounded-full transition-all duration-700 ease-out"
+              style={{
+                width: `${progress}%`,
+                background: tokens.accent,
+              }}
+            />
+          </div>
+          <p className="text-xs text-right" style={{ color: tokens.accent }}>
+            {GENERATION_STEPS[stepIndex]}
+          </p>
+          <p className="text-[10px] text-right" style={{ color: tokens.inkFaint }}>
+            Keep this tab open. Generation usually takes 1–3 minutes.
+          </p>
+        </div>
+      )}
+      {message && !error && !pending && (
         <p className="text-xs max-w-xs text-right" style={{ color: tokens.accent }}>
           {message}
         </p>
