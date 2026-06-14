@@ -219,7 +219,7 @@ function CoverTemplate({ input }: { input: CoverArtInput }) {
           inset: 0,
           opacity: 0.35,
           backgroundImage:
-            "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03) 0, transparent 45%), radial-gradient(circle at 80% 70%, rgba(40,189,174,0.08) 0, transparent 50%)",
+            "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.03) 0%, transparent 45%), radial-gradient(circle at 80% 70%, rgba(40,189,174,0.08) 0%, transparent 50%)",
         }}
       />
 
