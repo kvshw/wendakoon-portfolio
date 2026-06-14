@@ -9,6 +9,8 @@ import { ContentEngineClient } from "@/components/admin/ContentEngine/ContentEng
 import { GenerateNowButton } from "@/components/admin/ContentEngine/GenerateNowButton";
 import { PageHeader } from "@/components/admin/PageHeader";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   searchParams: Promise<{ post?: string; status?: string }>;
 };

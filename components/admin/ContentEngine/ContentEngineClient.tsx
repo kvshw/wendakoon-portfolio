@@ -31,17 +31,22 @@ export function ContentEngineClient({ posts, detail, status, appUrl }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedId = searchParams.get("post");
+  const activePostId = selectedId ?? detail?.post.id ?? null;
 
   const selectPost = (id: string) => {
+    if (id === activePostId) return;
     const params = new URLSearchParams(searchParams.toString());
     params.set("post", id);
-    router.push(`/admin/content-engine?${params.toString()}`);
+    router.replace(`/admin/content-engine?${params.toString()}`);
+    router.refresh();
   };
 
   const setStatus = (next: ContentEngineStatus) => {
+    if (next === status) return;
     const params = new URLSearchParams();
     params.set("status", next);
-    router.push(`/admin/content-engine?${params.toString()}`);
+    router.replace(`/admin/content-engine?${params.toString()}`);
+    router.refresh();
   };
 
   return (
@@ -86,7 +91,7 @@ export function ContentEngineClient({ posts, detail, status, appUrl }: Props) {
         <div className="flex-1 overflow-y-auto">
           <DraftsQueue
             drafts={posts}
-            selectedId={selectedId}
+            selectedId={activePostId}
             onSelect={selectPost}
           />
         </div>
@@ -95,6 +100,7 @@ export function ContentEngineClient({ posts, detail, status, appUrl }: Props) {
       <main className="flex-1 min-w-0">
         {detail ? (
           <ReviewPanel
+            key={detail.post.id}
             post={detail.post}
             linkedin={detail.linkedin}
             appUrl={appUrl}
