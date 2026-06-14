@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useMemo, useState, useTransition } from "react";
-import type { Post, LinkedinPost } from "@/db/schema";
+import type { ClientLinkedinPost, ClientPost } from "@/lib/db/serialize";
 import {
   updatePostDraft,
   approvePost,
@@ -20,8 +20,8 @@ import { CoverImagePanel } from "./CoverImagePanel";
 type Tab = "edit" | "seo" | "linkedin" | "preview";
 
 type Props = {
-  post: Post;
-  linkedin: LinkedinPost[];
+  post: ClientPost;
+  linkedin: ClientLinkedinPost[];
   appUrl?: string;
 };
 

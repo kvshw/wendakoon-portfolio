@@ -5,6 +5,10 @@ import {
   getPostWithLinkedin,
   type ContentEngineStatus,
 } from "@/lib/content/queries";
+import {
+  serializeLinkedinPost,
+  serializePost,
+} from "@/lib/db/serialize";
 import { ContentEngineClient } from "@/components/admin/ContentEngine/ContentEngineClient";
 import { GenerateNowButton } from "@/components/admin/ContentEngine/GenerateNowButton";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -28,7 +32,8 @@ export default async function ContentEnginePage({ searchParams }: Props) {
   const status = parseStatus(params.status);
 
   let posts: Awaited<ReturnType<typeof getContentEnginePosts>> = [];
-  let detail = null;
+  let detail: Awaited<ReturnType<typeof getPostWithLinkedin>> = null;
+  let loadError: string | null = null;
 
   try {
     posts = await getContentEnginePosts(status);
@@ -39,6 +44,8 @@ export default async function ContentEnginePage({ searchParams }: Props) {
     }
   } catch (err) {
     console.error("[content-engine]", err);
+    loadError =
+      err instanceof Error ? err.message : "Failed to load content engine data.";
   }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -58,23 +65,39 @@ export default async function ContentEnginePage({ searchParams }: Props) {
           action={<GenerateNowButton />}
         />
       </div>
-      <Suspense
-        fallback={
-          <div
-            className="p-6 text-sm lg:px-8"
-            style={{ color: "var(--admin-ink-dim)" }}
-          >
-            Loading content…
-          </div>
-        }
-      >
-        <ContentEngineClient
-          posts={posts}
-          detail={detail}
-          status={status}
-          appUrl={appUrl}
-        />
-      </Suspense>
+      {loadError ? (
+        <div
+          className="p-6 text-sm lg:px-8"
+          style={{ color: "var(--admin-red, #ef4444)" }}
+        >
+          {loadError}
+        </div>
+      ) : (
+        <Suspense
+          fallback={
+            <div
+              className="p-6 text-sm lg:px-8"
+              style={{ color: "var(--admin-ink-dim)" }}
+            >
+              Loading content…
+            </div>
+          }
+        >
+          <ContentEngineClient
+            posts={posts.map(serializePost)}
+            detail={
+              detail
+                ? {
+                    post: serializePost(detail.post),
+                    linkedin: detail.linkedin.map(serializeLinkedinPost),
+                  }
+                : null
+            }
+            status={status}
+            appUrl={appUrl}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }

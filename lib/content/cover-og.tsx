@@ -24,14 +24,31 @@ function truncateTitle(title: string, max = 72): string {
   return `${t.slice(0, max - 1).trim()}…`;
 }
 
+const FONT_URLS = {
+  spaceGrotesk600:
+    "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj42Vksg.woff",
+  jetbrainsMono400:
+    "https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPg.woff",
+} as const;
+
+async function fetchFont(url: string, label: string): Promise<ArrayBuffer> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to load ${label} font (${res.status})`);
+  }
+
+  const data = await res.arrayBuffer();
+  if (data.byteLength < 1024) {
+    throw new Error(`Failed to load ${label} font (empty response)`);
+  }
+
+  return data;
+}
+
 async function loadFonts() {
   const [spaceGrotesk, jetbrainsMono] = await Promise.all([
-    fetch(
-      "https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj62UUsg.woff2"
-    ).then((res) => res.arrayBuffer()),
-    fetch(
-      "https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnV8i36Y2uT.woff2"
-    ).then((res) => res.arrayBuffer()),
+    fetchFont(FONT_URLS.spaceGrotesk600, "Space Grotesk"),
+    fetchFont(FONT_URLS.jetbrainsMono400, "JetBrains Mono"),
   ]);
 
   return [
@@ -376,14 +393,19 @@ function CoverTemplate({ input }: { input: CoverArtInput }) {
 export async function renderBrandedCoverPng(
   input: CoverArtInput
 ): Promise<Buffer> {
-  const fonts = await loadFonts();
+  let fonts: Awaited<ReturnType<typeof loadFonts>> | undefined;
+  try {
+    fonts = await loadFonts();
+  } catch (err) {
+    console.error("[cover-og] Custom fonts unavailable, using defaults:", err);
+  }
 
   const response = new ImageResponse(
     <CoverTemplate input={input} />,
     {
       width: WIDTH,
       height: HEIGHT,
-      fonts,
+      ...(fonts ? { fonts } : {}),
     }
   );
 

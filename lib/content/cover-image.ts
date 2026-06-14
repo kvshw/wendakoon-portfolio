@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
+import { getSupabaseAdmin } from "@/lib/db/supabase";
 import { renderBrandedCoverPng } from "./cover-og";
 
 export const BRAND_COVER_STYLE = `
@@ -40,8 +41,33 @@ async function savePngCover(
   buffer: Buffer,
   filenameBase: string
 ): Promise<string> {
-  const dir = await ensureCoverDir();
   const filename = `${filenameBase}.png`;
+  const objectPath = `covers/${filename}`;
+
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const supabase = getSupabaseAdmin();
+      const { error } = await supabase.storage
+        .from("blog-covers")
+        .upload(objectPath, buffer, {
+          contentType: "image/png",
+          upsert: true,
+        });
+
+      if (!error) {
+        const { data } = supabase.storage
+          .from("blog-covers")
+          .getPublicUrl(objectPath);
+        return data.publicUrl;
+      }
+
+      console.error("[cover] Supabase upload failed:", error.message);
+    } catch (err) {
+      console.error("[cover] Supabase storage unavailable:", err);
+    }
+  }
+
+  const dir = await ensureCoverDir();
   await writeFile(path.join(dir, filename), buffer);
   return `/blog/covers/${filename}`;
 }

@@ -1,20 +1,19 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import type { Post } from "@/db/schema";
+import type { ClientLinkedinPost, ClientPost } from "@/lib/db/serialize";
 import { DraftsQueue } from "./DraftsQueue";
 import { ReviewPanel } from "./ReviewPanel";
-import type { LinkedinPost } from "@/db/schema";
 import type { ContentEngineStatus } from "@/lib/content/queries";
 import { tokens } from "@/lib/admin/tokens";
 
 type Detail = {
-  post: Post;
-  linkedin: LinkedinPost[];
+  post: ClientPost;
+  linkedin: ClientLinkedinPost[];
 } | null;
 
 type Props = {
-  posts: Post[];
+  posts: ClientPost[];
   detail: Detail;
   status: ContentEngineStatus;
   appUrl?: string;

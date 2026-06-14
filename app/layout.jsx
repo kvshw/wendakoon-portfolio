@@ -47,7 +47,17 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body>
-        <ClerkProvider appearance={clerkAppearance}>
+        <ClerkProvider
+          appearance={clerkAppearance}
+          signInFallbackRedirectUrl={
+            process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL ??
+            "/admin/content-engine"
+          }
+          signUpFallbackRedirectUrl={
+            process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL ??
+            "/admin/content-engine"
+          }
+        >
           <Providers>{children}</Providers>
         </ClerkProvider>
         <div className="mouse-glow" aria-hidden="true"></div>

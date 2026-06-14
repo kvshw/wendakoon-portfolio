@@ -1,16 +1,16 @@
 "use client";
 
-import type { Post } from "@/db/schema";
+import type { ClientPost } from "@/lib/db/serialize";
 import { countWords } from "@/lib/content/seo";
 import { tokens } from "@/lib/admin/tokens";
 
 type Props = {
-  drafts: Post[];
+  drafts: ClientPost[];
   selectedId: string | null;
   onSelect: (id: string) => void;
 };
 
-const statusBadge: Record<Post["status"], { label: string; color: string; bg: string }> = {
+const statusBadge: Record<ClientPost["status"], { label: string; color: string; bg: string }> = {
   draft: { label: "Draft", color: tokens.inkDim, bg: tokens.surfaceHover },
   approved: { label: "Published", color: tokens.accent, bg: tokens.accentFaint },
   rejected: { label: "Rejected", color: tokens.red, bg: tokens.redFaint },
