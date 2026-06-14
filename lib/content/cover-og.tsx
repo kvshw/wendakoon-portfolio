@@ -14,7 +14,19 @@ function hashString(input: string): number {
   return Math.abs(h);
 }
 
-function pickMotif(seed: number): "network" | "grid" | "rings" {
+function pickMotif(seed: number, input: CoverArtInput): "network" | "grid" | "rings" {
+  const haystack = `${input.title} ${input.topicAngle} ${input.tags.join(" ")}`.toLowerCase();
+
+  if (/(agent|network|graph|connect|distributed|multi-?agent|llm|model|reason|orchestr)/.test(haystack)) {
+    return "network";
+  }
+  if (/(data|grid|infra|platform|system|pipeline|architecture|scal|deploy|cloud|compute)/.test(haystack)) {
+    return "grid";
+  }
+  if (/(privacy|secur|signal|wave|adaptive|learning|feedback|health|clinical|patient|sensor)/.test(haystack)) {
+    return "rings";
+  }
+
   const motifs = ["network", "grid", "rings"] as const;
   return motifs[seed % motifs.length];
 }
@@ -195,7 +207,7 @@ function RingsMotif({ seed }: { seed: number }) {
 
 function CoverTemplate({ input }: { input: CoverArtInput }) {
   const seed = hashString(`${input.slug}-${input.title}`);
-  const motif = pickMotif(seed);
+  const motif = pickMotif(seed, input);
   const tag = (input.tags[0] ?? "AI").toUpperCase();
   const title = truncateTitle(input.title);
   const glowX = 680 + (seed % 160);

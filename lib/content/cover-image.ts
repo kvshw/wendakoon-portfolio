@@ -4,9 +4,8 @@ import { getSupabaseAdmin } from "@/lib/db/supabase";
 import { renderBrandedCoverPng } from "./cover-og";
 
 export const BRAND_COVER_STYLE = `
-Ultra high-resolution editorial hero photograph for a premium technology research blog.
+Cinematic, minimalist, technical aesthetic. Studio lighting, shallow depth of field, subtle film grain, crisp detail.
 Palette: near-black background #0A0D10, charcoal layers #11171B, teal accent #28BDAE, soft cyan glow #7AF7E5.
-Aesthetic: cinematic, minimalist, technical, abstract. Studio lighting, depth of field, subtle film grain, crisp detail.
 No text, no logos, no watermarks, no human faces, no clip art, no low-poly cheap 3D.
 `.trim();
 
@@ -20,15 +19,26 @@ export type CoverArtInput = {
 
 export function buildCoverImagePrompt(input: CoverArtInput): string {
   const custom = input.imagePrompt?.trim();
-  const topic = input.topicAngle || input.title;
+  const topic = (input.topicAngle || input.title).trim();
   const tags = input.tags.slice(0, 3).join(", ");
 
-  return `${BRAND_COVER_STYLE}
+  const subject = custom
+    ? custom
+    : `A clear, specific visual metaphor for "${topic}". Depict recognizable objects, structures, or scenes that signal this exact subject (cues: ${tags}) — not generic glowing shapes that could fit any article.`;
+
+  return `Editorial hero image for a premium technology research blog post.
+
+SUBJECT — this is the most important constraint. The image must visibly evoke the article's topic so a reader can guess what it is about from the picture alone:
+${subject}
 Topic: ${topic}
-Tags: ${tags}
-${custom ? `Visual direction: ${custom}` : "Visual direction: abstract representation of the topic through light, structure, and depth."}
-Composition: wide 16:9 landscape, cinematic negative space, focal glow on the right third, suitable as a premium blog hero image.
-Quality: sharp focus, rich contrast, professional editorial photography standard.`;
+Themes: ${tags}
+Prefer a single strong, concrete visual metaphor over vague abstraction.
+
+STYLE (apply to the subject above, do not let it replace the subject):
+${BRAND_COVER_STYLE}
+
+COMPOSITION: wide 16:9 landscape, cinematic depth and negative space, focal interest toward the right third, premium blog hero framing.
+QUALITY: sharp focus, rich contrast, professional editorial standard.`;
 }
 
 async function ensureCoverDir() {

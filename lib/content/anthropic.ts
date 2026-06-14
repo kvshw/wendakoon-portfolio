@@ -77,7 +77,7 @@ ${focusInstruction}
 Generate one original blog post with a fresh angle. Avoid generic listicles and repeated takes on "adaptive AI governance" unless the news context makes it timely.
 Pick a topic that would resonate on LinkedIn with senior engineers and health-tech builders.
 Include 2-6 specific tags (e.g. "Adaptive AI", "LLMs", "Clinical AI", "EU AI Act").
-Also provide cover_image_prompt: a short visual art direction for a wide blog hero image (abstract, on-brand, no text).
+Also provide cover_image_prompt: concrete, specific visual art direction for a wide blog hero image that clearly depicts THIS article's subject. Name real objects, structures, or scenes a viewer would recognize as related to this exact topic (use the tags as cues). Keep it on-brand (cinematic, minimalist, dark with teal/cyan accents, no text, no logos, no human faces). Avoid generic abstract shapes or "glowing particles" that could fit any article.
 Return JSON only.`;
 
   const message = await client.messages.create({
