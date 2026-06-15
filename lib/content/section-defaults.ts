@@ -29,7 +29,7 @@ export const CONTACT_DEFAULTS = {
   kicker: "Get in touch",
   statement: "If you are building systems that must adapt without losing trust, we should talk.",
   body: "Open to collaboration on medical AI, mHealth, and privacy-preserving systems. I bring both industry engineering and doctoral research to the table.",
-  email: "kaveebhashiofficial@gmail.com",
+  email: "hello@kavishwa.com",
   links: getProfileLinkChips(),
   availability: "Available for research collaboration and selective consulting engagements.",
 };

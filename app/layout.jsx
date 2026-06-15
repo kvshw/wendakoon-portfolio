@@ -1,6 +1,7 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { Anton, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { Providers } from "@/components/Providers";
+import { CookieConsent } from "@/components/CookieConsent";
 import { clerkAppearance } from "@/lib/clerk-appearance";
 import "./globals.css";
 import "./fonts.css";
@@ -59,6 +60,7 @@ export default function RootLayout({ children }) {
           }
         >
           <Providers>{children}</Providers>
+          <CookieConsent />
         </ClerkProvider>
         <div className="mouse-glow" aria-hidden="true"></div>
       </body>

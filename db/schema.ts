@@ -7,12 +7,19 @@ import {
   pgEnum,
   jsonb,
   uniqueIndex,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const postStatusEnum = pgEnum("post_status", [
   "draft",
   "approved",
   "rejected",
+]);
+
+export const messageStatusEnum = pgEnum("message_status", [
+  "new",
+  "read",
+  "archived",
 ]);
 
 export const linkedinStatusEnum = pgEnum("linkedin_status", [
@@ -87,6 +94,28 @@ export const siteContent = pgTable(
   ]
 );
 
+export const contactMessages = pgTable(
+  "contact_messages",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    context: text("context"),
+    message: text("message").notNull(),
+    consent: boolean("consent").notNull().default(false),
+    status: messageStatusEnum("status").notNull().default("new"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("contact_messages_status_created_at_idx").on(
+      table.status,
+      table.createdAt
+    ),
+  ]
+);
+
 export const siteMetadata = pgTable("site_metadata", {
   key: text("key").primaryKey(),
   value: jsonb("value").notNull(),
@@ -101,3 +130,5 @@ export type LinkedinPost = typeof linkedinPosts.$inferSelect;
 export type NewLinkedinPost = typeof linkedinPosts.$inferInsert;
 export type SiteContent = typeof siteContent.$inferSelect;
 export type SiteMetadata = typeof siteMetadata.$inferSelect;
+export type ContactMessage = typeof contactMessages.$inferSelect;
+export type NewContactMessage = typeof contactMessages.$inferInsert;

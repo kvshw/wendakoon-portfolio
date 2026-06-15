@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const prodUrl = process.env.PROD_URL ?? "https://wendakoon.vercel.app";
+const prodUrl = process.env.PROD_URL ?? "https://kavishwa.com";
 const cronSecret = process.env.CRON_SECRET ?? randomBytes(32).toString("hex");
 
 const raw = readFileSync(join(root, ".env.local"), "utf8");

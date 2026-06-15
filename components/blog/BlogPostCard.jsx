@@ -6,24 +6,32 @@ import { TiltCard } from "@/components/primitives/TiltCard";
 const CardBody = ({ post }) => {
   const inner = (
     <>
-      {post.coverImage && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={post.coverImage}
-          alt=""
-          className="mb-4 h-44 w-full rounded object-cover"
-          width={1200}
-          height={630}
-          loading="lazy"
-          decoding="async"
-        />
-      )}
-      <div className="date">[ {post.date} ]</div>
-      <h3>{post.title}</h3>
-      {post.excerpt ? <p>{post.excerpt}</p> : null}
-      <span className="link">
-        Read post <Arrow size={12} />
-      </span>
+      <div className="blog-card-media" data-empty={post.coverImage ? undefined : "true"}>
+        {post.coverImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={post.coverImage}
+            alt=""
+            className="blog-card-cover"
+            width={1200}
+            height={630}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <span className="blog-card-media-mark" aria-hidden="true">
+            {(post.title || "·").charAt(0)}
+          </span>
+        )}
+      </div>
+      <div className="blog-card-body">
+        <div className="date">[ {post.date} ]</div>
+        <h3>{post.title}</h3>
+        {post.excerpt ? <p>{post.excerpt}</p> : null}
+        <span className="link">
+          Read post <Arrow size={12} />
+        </span>
+      </div>
     </>
   );
 

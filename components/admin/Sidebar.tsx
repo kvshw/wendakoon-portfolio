@@ -13,6 +13,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   LogOut,
+  Inbox,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { tokens } from "@/lib/admin/tokens";
@@ -36,6 +37,10 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
       { href: "/admin/blog", label: "Blog", icon: FileText },
       { href: "/admin/content", label: "Website Sections", icon: Layers },
     ],
+  },
+  {
+    label: "Engage",
+    items: [{ href: "/admin/messages", label: "Inbox", icon: Inbox }],
   },
   {
     label: "Insights",

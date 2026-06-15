@@ -3,7 +3,7 @@ import { posts, linkedinPosts } from "@/db/schema";
 import { requireDb } from "@/lib/db/drizzle";
 import { generateContentDraft } from "./anthropic";
 import { slugify, withSlugSuffix } from "./slug";
-import { sendContentDraftCreatedEmail } from "@/lib/notify/email";
+import { sendContentDraftCreatedEmail, getAppBaseUrl } from "@/lib/notify/email";
 import { generateAndSaveCover } from "./cover-image";
 
 export type GenerationResult = {
@@ -86,13 +86,18 @@ export async function runContentGeneration(): Promise<GenerationResult> {
     )
     .returning({ id: linkedinPosts.id });
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const appUrl = getAppBaseUrl();
   const reviewUrl = `${appUrl}/admin/content-engine?post=${post.id}`;
 
   try {
     await sendContentDraftCreatedEmail({
       title: post.title,
       reviewUrl,
+      summary: generated.blog.summary,
+      excerpt,
+      tags: generated.blog.tags,
+      coverImage,
+      linkedinCount: linkedinRows.length,
     });
   } catch (err) {
     console.error("[notify] Failed to send draft notification:", err);
