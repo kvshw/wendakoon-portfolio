@@ -53,7 +53,7 @@ export const CookieConsent = () => {
         <p className="cookie-consent__body">
           This site uses only what it needs to work (like remembering your chat
           on this device). I&apos;d also like to enable optional analytics to
-          understand what&apos;s useful — your call. See the{" "}
+          understand what&apos;s useful - your call. See the{" "}
           <a href="/privacy">privacy notice</a>.
         </p>
       </div>
