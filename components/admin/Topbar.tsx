@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight, ExternalLink } from "lucide-react";
+import { ChevronRight, ExternalLink, Menu } from "lucide-react";
 import { useClock } from "@/lib/admin/hooks/useClock";
 import { tokens } from "@/lib/admin/tokens";
 
@@ -46,55 +46,72 @@ function getBreadcrumbs(pathname: string): { label: string; href?: string }[] {
   return crumbs;
 }
 
-export function Topbar() {
+type TopbarProps = {
+  onMobileMenuOpen?: () => void;
+};
+
+export function Topbar({ onMobileMenuOpen }: TopbarProps) {
   const pathname = usePathname();
   const time = useClock();
   const crumbs = getBreadcrumbs(pathname);
 
   return (
     <header
-      className="sticky top-0 z-20 flex h-[3.25rem] shrink-0 items-center justify-between border-b px-6 backdrop-blur-md lg:px-8"
+      className="sticky top-0 z-20 flex h-[3.25rem] shrink-0 items-center justify-between border-b px-4 backdrop-blur-md sm:px-6 lg:px-8"
       style={{
         borderColor: tokens.line,
         background: "rgba(8, 11, 14, 0.85)",
       }}
     >
-      <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5 text-sm">
-        {crumbs.map((crumb, i) => {
-          const isLast = i === crumbs.length - 1;
-          return (
-            <span key={`${crumb.label}-${i}`} className="flex min-w-0 items-center gap-1.5">
-              {i > 0 && (
-                <ChevronRight
-                  size={14}
-                  className="shrink-0"
-                  style={{ color: tokens.inkFaint }}
-                  aria-hidden
-                />
-              )}
-              {crumb.href && !isLast ? (
-                <Link
-                  href={crumb.href}
-                  className="truncate font-medium transition-colors duration-150 hover:underline"
-                  style={{ color: tokens.inkDim }}
-                >
-                  {crumb.label}
-                </Link>
-              ) : (
-                <span
-                  className="truncate font-medium"
-                  style={{ color: isLast ? tokens.ink : tokens.inkDim }}
-                  aria-current={isLast ? "page" : undefined}
-                >
-                  {crumb.label}
-                </span>
-              )}
-            </span>
-          );
-        })}
-      </nav>
+      <div className="flex min-w-0 items-center gap-3">
+        {onMobileMenuOpen && (
+          <button
+            type="button"
+            onClick={onMobileMenuOpen}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors duration-150"
+            style={{ color: tokens.inkDim }}
+            aria-label="Open navigation menu"
+          >
+            <Menu size={18} />
+          </button>
+        )}
+        <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-1.5 text-sm">
+          {crumbs.map((crumb, i) => {
+            const isLast = i === crumbs.length - 1;
+            return (
+              <span key={`${crumb.label}-${i}`} className="flex min-w-0 items-center gap-1.5">
+                {i > 0 && (
+                  <ChevronRight
+                    size={14}
+                    className="shrink-0"
+                    style={{ color: tokens.inkFaint }}
+                    aria-hidden
+                  />
+                )}
+                {crumb.href && !isLast ? (
+                  <Link
+                    href={crumb.href}
+                    className="truncate font-medium transition-colors duration-150 hover:underline"
+                    style={{ color: tokens.inkDim }}
+                  >
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span
+                    className="truncate font-medium"
+                    style={{ color: isLast ? tokens.ink : tokens.inkDim }}
+                    aria-current={isLast ? "page" : undefined}
+                  >
+                    {crumb.label}
+                  </span>
+                )}
+              </span>
+            );
+          })}
+        </nav>
+      </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex shrink-0 items-center gap-3">
         <Link
           href="/"
           target="_blank"
@@ -107,7 +124,7 @@ export function Topbar() {
         </Link>
 
         <div
-          className="flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium"
+          className="flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-medium"
           style={{
             borderColor: tokens.lineStrong,
             background: tokens.surface,

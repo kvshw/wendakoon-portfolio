@@ -219,7 +219,7 @@ export function PostEditor({ post }: Props) {
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="Write markdown…"
               />
-              <div className="blog-prose overflow-y-auto p-4">
+              <div className="blog-prose hidden overflow-y-auto p-4 md:block">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{body || "*Preview*"}</ReactMarkdown>
               </div>
             </div>

@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import type { ClientLinkedinPost, ClientPost } from "@/lib/db/serialize";
 import { DraftsQueue } from "./DraftsQueue";
 import { ReviewPanel } from "./ReviewPanel";
@@ -32,12 +34,17 @@ export function ContentEngineClient({ posts, detail, status, appUrl }: Props) {
   const selectedId = searchParams.get("post");
   const activePostId = selectedId ?? detail?.post.id ?? null;
 
+  const [mobileView, setMobileView] = useState<"list" | "detail">(
+    activePostId ? "detail" : "list"
+  );
+
   const selectPost = (id: string) => {
     if (id === activePostId) return;
     const params = new URLSearchParams(searchParams.toString());
     params.set("post", id);
     router.replace(`/admin/content-engine?${params.toString()}`);
     router.refresh();
+    setMobileView("detail");
   };
 
   const setStatus = (next: ContentEngineStatus) => {
@@ -46,12 +53,15 @@ export function ContentEngineClient({ posts, detail, status, appUrl }: Props) {
     params.set("status", next);
     router.replace(`/admin/content-engine?${params.toString()}`);
     router.refresh();
+    setMobileView("list");
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem)]">
+    <div className="flex h-[calc(100vh-4rem)] overflow-hidden md:flex-row flex-col">
       <aside
-        className="w-full max-w-sm border-r overflow-y-auto shrink-0 flex flex-col"
+        className={`md:flex md:max-w-sm md:border-r md:border-b-0 border-b w-full shrink-0 flex-col overflow-y-auto ${
+          mobileView === "detail" ? "hidden md:flex" : "flex"
+        }`}
         style={{ borderColor: tokens.line }}
       >
         <div className="px-4 py-3 border-b" style={{ borderColor: tokens.line }}>
@@ -96,7 +106,21 @@ export function ContentEngineClient({ posts, detail, status, appUrl }: Props) {
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0">
+      <main
+        className={`flex-1 min-w-0 overflow-y-auto flex-col ${
+          mobileView === "list" ? "hidden md:flex" : "flex"
+        }`}
+      >
+        <button
+          type="button"
+          onClick={() => setMobileView("list")}
+          className="md:hidden flex items-center gap-2 px-4 py-3 text-sm font-medium border-b shrink-0"
+          style={{ color: tokens.inkDim, borderColor: tokens.line }}
+        >
+          <ArrowLeft size={16} />
+          Back to queue
+        </button>
+
         {detail ? (
           <ReviewPanel
             key={detail.post.id}
@@ -106,7 +130,7 @@ export function ContentEngineClient({ posts, detail, status, appUrl }: Props) {
           />
         ) : (
           <div
-            className="flex h-full items-center justify-center text-sm"
+            className="flex flex-1 items-center justify-center text-sm"
             style={{ color: tokens.inkDim }}
           >
             Select a post to review
