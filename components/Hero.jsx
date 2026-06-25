@@ -31,6 +31,20 @@ export const Hero = ({ content }) => {
 
       <div className="hero-grid">
         <div className="hero-tagline">
+          <Reveal delay={80}>
+            <a
+              href="#publications"
+              className="hero-award-pill"
+              aria-label="Best Paper Award – NCDHWS26, Springer Nature"
+            >
+              <span className="hero-award-star">★</span>
+              <span className="hero-award-text">
+                <span className="hero-award-title">Best Paper Award</span>
+                <span className="hero-award-sep">·</span>
+                <span className="hero-award-venue">NCDHWS26 · Springer Nature</span>
+              </span>
+            </a>
+          </Reveal>
           <Reveal delay={120}>
             <p className="section-kicker" style={{ margin: 0 }}>{kicker}</p>
             <p className="lead" style={{ marginTop: 14 }}>{lead}</p>

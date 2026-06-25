@@ -3046,6 +3046,48 @@ footer .container {
 /* ===========================================================
    FOR-YOU TEASER
    =========================================================== */
+.hero-award-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 7px 14px 7px 10px;
+  border: 1px solid rgba(40,189,174,0.45);
+  border-radius: 999px;
+  background: rgba(40,189,174,0.07);
+  backdrop-filter: blur(8px);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 18px rgba(40,189,174,0.12);
+}
+.hero-award-pill:hover {
+  background: rgba(40,189,174,0.13);
+  border-color: var(--accent);
+  box-shadow: 0 0 28px rgba(40,189,174,0.22);
+}
+.hero-award-star {
+  font-size: 13px;
+  color: var(--accent);
+  line-height: 1;
+}
+.hero-award-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.hero-award-title { color: var(--accent); font-weight: 600; }
+.hero-award-sep { color: var(--text-faint); }
+.hero-award-venue { color: var(--text-dim); }
+@media (max-width: 480px) {
+  .hero-award-venue { display: none; }
+  .hero-award-sep { display: none; }
+}
+
 .foryou-teaser {
   display: inline-flex;
   align-items: center;
