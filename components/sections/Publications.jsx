@@ -36,9 +36,20 @@ export const Publications = ({ content }) => {
 
         <div className="pub-list">
           {items.map((p, i) => (
-            <div className="pub-card" key={i} data-reveal="left" style={{ "--reveal-delay": `${i * 70}ms` }}>
+            <div
+              className={`pub-card${p.award ? " pub-card--award" : ""}`}
+              key={i}
+              data-reveal="left"
+              style={{ "--reveal-delay": `${i * 70}ms` }}
+            >
               <div className="pub-year">{p.year}</div>
               <div>
+                {p.award && (
+                  <div className="pub-award-banner">
+                    <span className="pub-award-icon">★</span>
+                    {p.award}
+                  </div>
+                )}
                 <div className="pub-meta-top">
                   <span className="badge">{p.kind}</span>
                   <span>{p.venue}</span>
@@ -49,7 +60,18 @@ export const Publications = ({ content }) => {
               <div className="pub-tags">
                 {p.tags.map((t) => <span className="chip" key={t}>{t}</span>)}
               </div>
-              <button className="pub-action">{p.action}</button>
+              {p.link ? (
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pub-action"
+                >
+                  {p.action}
+                </a>
+              ) : (
+                <button className="pub-action">{p.action}</button>
+              )}
             </div>
           ))}
         </div>

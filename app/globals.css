@@ -2061,6 +2061,15 @@ p, .sub, .body, .lead {
 .award-card .yr { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--accent); }
 .award-card h4 { font-family: "Anton", sans-serif; font-size: 26px; text-transform: uppercase; margin: 8px 0; line-height: 1.05; }
 .award-card .by { color: var(--text-dim); font-size: 13.5px; }
+.award-card .note { color: var(--text-faint); font-size: 12.5px; font-style: italic; margin-top: 8px; }
+.award-card.featured {
+  background: linear-gradient(135deg, rgba(40,189,174,0.08) 0%, var(--bg) 60%);
+  border-top: 2px solid var(--accent);
+  grid-column: 1 / -1;
+}
+.award-card.featured h4 { font-size: 32px; color: var(--text); }
+.award-card.featured .yr { color: var(--accent-2); font-size: 12px; }
+.award-card.featured .by { color: var(--accent); font-size: 14px; }
 
 /* ===========================================================
    PUBLICATIONS
@@ -2125,6 +2134,28 @@ p, .sub, .body, .lead {
   transition: all 0.25s ease;
 }
 .pub-action:hover { background: var(--accent); border-color: var(--accent); color: #0A0D10; }
+
+.pub-card--award {
+  border-left: 2px solid var(--accent);
+  background: linear-gradient(90deg, rgba(40,189,174,0.04) 0%, transparent 40%);
+}
+.pub-card--award:hover { background: linear-gradient(90deg, rgba(40,189,174,0.07) 0%, var(--surface) 40%); }
+.pub-award-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(40,189,174,0.10);
+  border: 1px solid rgba(40,189,174,0.35);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.pub-award-icon { font-size: 11px; }
 
 /* ===========================================================
    BLOG
@@ -3211,6 +3242,9 @@ footer .container {
 [data-theme="light"] .skill-group { background: var(--surface); border-color: rgba(10, 12, 14, 0.18); }
 [data-theme="light"] .awards-grid { background: rgba(10,12,14,0.16); border-color: rgba(10,12,14,0.16); }
 [data-theme="light"] .award-card { background: var(--surface); }
+[data-theme="light"] .award-card.featured { background: linear-gradient(135deg, rgba(40,189,174,0.06) 0%, var(--surface) 60%); }
+[data-theme="light"] .pub-card--award { background: linear-gradient(90deg, rgba(40,189,174,0.05) 0%, var(--surface) 40%); }
+[data-theme="light"] .pub-card--award:hover { background: linear-gradient(90deg, rgba(40,189,174,0.09) 0%, var(--surface-2) 40%); }
 
 /* Publications */
 [data-theme="light"] .pub-list { background: rgba(10,12,14,0.16); border-color: rgba(10,12,14,0.16); }

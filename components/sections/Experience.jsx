@@ -124,10 +124,16 @@ export const Experience = ({ content }) => {
           {tab === "awards" && (
             <div className="awards-grid">
               {awards.map((a, i) => (
-                <div className="award-card" key={i} data-reveal="scale" style={{ "--reveal-delay": `${i * 80}ms` }}>
+                <div
+                  className={`award-card${a.featured ? " featured" : ""}`}
+                  key={i}
+                  data-reveal="scale"
+                  style={{ "--reveal-delay": `${i * 80}ms` }}
+                >
                   <div className="yr"><span className="bracket">{a.yr}</span></div>
                   <h4>{a.title}</h4>
                   <div className="by">{a.by}</div>
+                  {a.note && <div className="note">{a.note}</div>}
                 </div>
               ))}
             </div>
